@@ -1,0 +1,14 @@
+['/home/ting/FTVM_TestAgent/testagent/../tests/cfg/base.cfg'] 
+
+test
+[{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/general_tests/', 'FTlevel': '0', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/general_tests/cfg/', 'test_name': 'vm_start'}, 
+
+{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/', 'FTlevel': '1', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/cfg/', 'test_name': 'L1_ft_vm_crash'}, 
+
+{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/', 'FTlevel': '1', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/cfg/', 'test_name': 'L1_hostOS_crash'}, 
+
+{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L2_tests/', 'FTlevel': '2', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L2_tests/cfg/', 'test_name': 'L2_ft_vm_crash'}, 
+
+{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/', 'FTlevel': '1', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L1_tests/cfg/', 'test_name': 'L1_test2'}, 
+
+{'test_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L2_tests/', 'FTlevel': '2', 'test_cfg_dir': '/home/ting/FTVM_TestAgent/testagent/../tests/L2_tests/cfg/', 'test_name': 'L2_test1test1'}]

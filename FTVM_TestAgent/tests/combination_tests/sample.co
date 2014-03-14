@@ -1,0 +1,12 @@
+#####example of *.co
+#currently category: !0: general, !1: L1, !2: L2, !co: *.co
+#
+#!1
+#test_l1
+#!2
+#test_l2
+#!0
+#test
+#!co
+#L1
+#
