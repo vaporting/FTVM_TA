@@ -41,6 +41,7 @@ class TestAgentRunner(object):
     """
     main point of execution of the test runner
     """
+    #round_test.run_tests(self.options)
     round_test.run_tests(self.options)
     #print round_test.set_tests_list(self.options)
 
@@ -51,10 +52,10 @@ if __name__ == "__main__":
   runner.main()
   """
   from testagent import cartesian_config
-  parser = cartesian_config.Parser("./tests/L1_tests/cfg/L1_ft_vm_crash.cfg")
+  parser = cartesian_config.Parser("./tests/L1_tests/cfg/test1.cfg")
   a = parser.get_dicts().next()
   print parser.get_dicts().next(),"\n"
-  print a[0]['pre_check_FT_hostOS_boot'],"\n\n"
+  print a['pre_check_FT_hostOS_boot'],"\n\n"
   print os.listdir(data_dir.TESTS_CFG_DIR),"\n"
 
   for f in os.listdir(data_dir.TESTS_CFG_DIR):
