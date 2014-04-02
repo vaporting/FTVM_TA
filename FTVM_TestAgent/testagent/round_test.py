@@ -95,7 +95,8 @@ def set_macro_ele(parser, ele_no):
 
 class Test(object):
   def __init__(self, test_info):
-    self.test_cfg_path = test_info["test_cfg_dir"]+test_info["test_name"]+".cfg"  
+    self.test_cfg_path = test_info["test_cfg_dir"]+test_info["test_name"]+".cfg" 
+    self.base_cfg_path = data_dir.TESTS_CFG_DIR+"base.cfg"
     self.test_dir = test_info["test_dir"]
     self.test_name = test_info["test_name"]
     self.FTlevel = test_info["FTlevel"]
@@ -176,18 +177,24 @@ class Test(object):
     parse test cfg
     """
     try:
-      self.parser = cartesian_config.Parser(self.test_cfg_path).get_dicts().next()
+      base_parser = cartesian_config.Parser(self.base_cfg_path).get_dicts().next()
+      test_parser = cartesian_config.Parser(self.test_cfg_path).get_dicts().next()
+      self.parser = dict(base_parser.items() + test_parser.items())
+      #print self.parser
     except Exception, e:
       raise Exception("test case : "+self.test_name+", cfg file problem")
 
   def run(self):
     #run test case
     global n_tests_fail
+    test_pass = False
     try:
       try:
         t_begin = time.time()
         run_func = self._set_run_func()
-        run_func()
+        #run_func()
+        run_func(self.parser)
+        test_pass = True
       finally:
         t_end = time.time()
         t_elapsed = t_end - t_begin
@@ -208,7 +215,10 @@ class Test(object):
       print e.content
     except TA_error.Postprocess_Error, e:
       #postprocess has some problems
+      print "postprocess error"
       print e.content
+    if test_pass == True:
+      print_pass(self.test_name,t_elapsed)
 
   def main(self):
     self._parse_test_cfg()  #parse test cfg file
@@ -329,6 +339,7 @@ def run_tests(options):
   """
   accroding to tests_list to run all tests
   """
+  global n_tests_not_existed
   test_lists = set_tests_list(options)
   for test in test_lists:
     if check_test_exist(test):
