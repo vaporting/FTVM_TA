@@ -27,6 +27,7 @@ def preprocess_hostOS(parser):
   """
   preprocess HostOS
   """
+  preprocess_hostOS_OS(parser)
   preprocess_hostOS_FTsystem(parser)
   preprocess_hostOS_vm(parser)
 
@@ -34,7 +35,21 @@ def preprocess_backupOS(parser):
   """
   preprocess backupOS
   """
+  preprocess_backupOS_OS(parser)
   preprocess_backupOS_FTsystem(parser)
+  preprocess_backupOS_vm(parser)
+
+def preprocess_hostOS_OS(parser):
+  """
+  preprocess hostOS OS
+  """
+  pass
+
+def preprocess_backupOS_OS(parser):
+  """
+  preprocess backupOS OS
+  """
+  pass
   
 
 def preprocess_hostOS_FTsystem(parser):
@@ -77,7 +92,24 @@ def preprocess_backupOS_FTsystem(parser):
 
   raise exception if FTsystem can not start/stop
   """
-  pass
+  if parser["pre_check_backupOS_FTsystem"] == "yes":
+    ssh = shell_server.get_ssh(parser["backupOS_ip"]
+                              , parser["backupOS_usr"]
+                              , parser["backupOS_pwd"])
+    status = FTsystem.get_status(ssh)
+    if status == "not running" and parser["pre_backupOS_FTsystem_start"] == "yes":
+      FTsystem.start(ssh)
+      time.sleep(float(parser["pre_backupOS_FTsystem_start_time"]))
+      if FTsystem.get_status(ssh) == "not running":
+        ssh.close()
+        raise TA_error.Preprocess_Error("backupOS FTsystem can not start")
+    if status == "running" and parser["pre_backupOS_FTsystem_start"] == "no":
+      FTsystem.stop(ssh)
+      time.sleep(float(parser["pre_backupOS_FTsystem_start_time"]))
+      if FTsystem.get_status(ssh) == "running":
+        ssh.close()
+        raise TA_error.Preprocess_Error("backupOS FTsystem can not stop")
+    ssh.close()
   
 
 def preprocess_hostOS_vm(parser):
@@ -126,7 +158,7 @@ def prepocess_hostOS_vm_restart(parser):
 
 def preprocess_hostOS_vm_shutdown(parser):
   """
-  preprocess vm become shutdown
+  preprocess hostOS vm become shutdown
   """
   if FTVM.is_running(parser["vm_name"], parser["HostOS_ip"]):
     FTVM.shutdown(parser["vm_name"], parser["HostOS_ip"])
@@ -137,6 +169,33 @@ def preprocess_hostOS_vm_shutdown(parser):
     time.sleep(float(parser["pre_hostOS_VM_shutdown_time"]))
   if not FTVM.is_shutoff(parser["vm_name"], parser["HostOS_ip"]):
     raise TA_error.Preprocess_Error("HostOS %s can not shutdown" % parser["vm_name"])
+
+def preprocess_backupOS_vm(parser):
+  """
+  preprocess backupOS vm
+  """
+  if parser["pre_check_backupOS_VM"] == "yes":
+    if parser["pre_backupOS_VM_status"] == "running":
+      pass
+      #preprocess_backupOS_vm_running(parser)
+    elif parser["pre_backupOS_VM_status"] == "shut off":
+      preprocess_backupOS_vm_shutdown(parser)
+    elif parser["pre_backupOS_VM_status"] == "paused":
+      pass
+
+def preprocess_backupOS_vm_shutdown(parser):
+  """
+  preprocess backupOS vm become shutdown
+  """
+  if FTVM.is_running(parser["vm_name"], parser["backupOS_ip"]):
+    FTVM.shutdown(parser["vm_name"], parser["backupOS_ip"])
+    time.sleep(float(parser["pre_backupOS_VM_shutdown_time"]))
+  elif FTVM.is_paused(parser["vm_name"], parser["backupOS_ip"]):
+    FTVM.resume(parser["vm_name"], parser["backupOS_ip"])
+    FTVM.shutdown(parser["vm_name"], parser["backupOS_ip"])
+    time.sleep(float(parser["pre_backupOS_VM_shutdown_time"]))
+  if not FTVM.is_shutoff(parser["vm_name"], parser["backupOS_ip"]):
+    raise TA_error.Preprocess_Error("backupOS %s can not shutdown" % parser["vm_name"])
 
 
 

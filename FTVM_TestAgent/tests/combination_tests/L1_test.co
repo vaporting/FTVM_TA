@@ -1,0 +1,6 @@
+#test L1 FTVM 
+!0
+vm_start
+!1
+L1_vm_ftstart
+L1_ft_vm_crash

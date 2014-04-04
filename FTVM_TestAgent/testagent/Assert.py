@@ -37,7 +37,11 @@ def vm_running_in_backupOS(parser):
 
 	return True/False
 	"""
-	pass
+	if "ast_vm_running_wait_time" in parser.keys():
+		time.sleep(int(parser["ast_vm_running_wait_time"]))
+	if FTVM.is_running(parser["vm_name"], parser["backupOS_ip"]):
+		return True
+	raise TA_error.Assert_Error("VM (name : %s) is not running on backupOS" % parser["vm_name"])
 
 
 def FTsystem_running_in_hostOS(parser):

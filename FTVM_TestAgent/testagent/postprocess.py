@@ -21,12 +21,19 @@ def postprocess_hostOS(parser):
 	"""
 	postprocess hostOS
 	"""
+	postprocess_hostOS_OS(parser)
 	postprocess_hostOS_FTsystem(parser)
 	postprocess_hostOS_vm(parser)
 	
 def postprocess_backupOS(parser):
 	"""
 	postprocess backupOS
+	"""
+	postprocess_backupOS_vm(parser)
+
+def postprocess_hostOS_OS(parser):
+	"""
+	postprocess hostOS OS
 	"""
 	pass
 
@@ -59,11 +66,6 @@ def postprocess_hostOS_FTsystem(parser):
 			raise TA_error.Postprocess_Error("HostOS FTsystem can not stop")
 	ssh.close()
 
-def postprocess_backupOS_FTsystem(parser):
-	"""
-	postprocess backupOS FTsystem
-	"""
-	pass
 
 def postprocess_hostOS_vm(parser):
 	"""
@@ -106,4 +108,24 @@ def postprocess_backupOS_vm(parser):
 	"""
 	postprocess backupOS vm
 	"""
-	pass
+	if parser["pos_check_backupOS_VM"] == "yes":
+		if parser["pos_backupOS_VM_status"] == "running":
+			#postprocess_backupOS_vm_running(parser)
+			pass
+		elif parser["pos_backupOS_VM_status"] == "shut off":
+			postprocess_backupOS_vm_shutdown(parser)
+		elif parser["pos_backupOS_VM_status"] == "paused":
+			pass
+
+def postprocess_backupOS_vm_shutdown(parser):
+	"""
+	postprocess backupOS vm shutdown
+	"""
+	if FTVM.is_running(parser["vm_name"], parser["backupOS_ip"]):
+		FTVM.shutdown(parser["vm_name"], parser["backupOS_ip"])
+	elif FTVM.is_paused(parser["vm_name"], parser["backupOS_ip"]):
+		FTVM.resume(parser["vm_name"], parser["backupOS_ip"])
+		FTVM.shutdown(parser["vm_name"], parser["backupOS_ip"])
+	time.sleep(float(parser["pos_backupOS_VM_shutdown_time"]))
+	if not FTVM.is_shutoff(parser["vm_name"], parser["backupOS_ip"]):
+		raise TA_error.Postprocess_Error("backupOS %s can not shutdown" % parser["vm_name"])
