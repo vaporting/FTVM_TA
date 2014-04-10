@@ -9,6 +9,7 @@ import FTsystem
 import FTVM
 import FTOS
 import TA_error
+import mmsh
 
 def postprocess(parser):
 	"""
@@ -21,7 +22,7 @@ def postprocess_hostOS(parser):
 	"""
 	postprocess hostOS
 	"""
-	postprocess_hostOS_OS(parser)
+	#postprocess_hostOS_OS(parser)
 	postprocess_hostOS_FTsystem(parser)
 	postprocess_hostOS_vm(parser)
 	
@@ -35,7 +36,13 @@ def postprocess_hostOS_OS(parser):
 	"""
 	postprocess hostOS OS
 	"""
-	pass
+	if parser["pos_hostOS_shutdown"] == "yes":
+		if mmsh.statehost(parser["HostOS_name"]) != "shutdown":
+			mmsh.stophost(parser["HostOS_name"])
+			time.sleep(float(parser["pos_hostOS_shutdown_time"]))
+	if mmsh.statehost(parser["HostOS_name"]) != "shutdown":
+		raise TA_error.Postprocess_Error("HostOS can not shutdown")
+
 
 def postprocess_hostOS_FTsystem(parser):
 	"""
@@ -101,6 +108,7 @@ def postprocess_hostOS_vm_shutdown(parser):
 		FTVM.resume(parser["vm_name"], parser["HostOS_ip"])
 		FTVM.shutdown(parser["vm_name"], parser["HostOS_ip"])
 	time.sleep(float(parser["pos_hostOS_VM_shutdown_time"]))
+	#print FTVM.is_shutoff(parser["vm_name"], parser["HostOS_ip"])
 	if not FTVM.is_shutoff(parser["vm_name"], parser["HostOS_ip"]):
 		raise TA_error.Postprocess_Error("HostOS %s can not shutdown" % parser["vm_name"])
 

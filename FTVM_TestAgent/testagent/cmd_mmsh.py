@@ -25,9 +25,58 @@ def inforecover_cmd(vm_name):
 	"""
 	return command("inforecover %s" % vm_name)
 
-def infohost_cmd(vm_name):
+def infohost_cmd(vm_name, option):
 	"""
-	mmsh infohost [vm_name]
-	"""
-	return command("infohost %s" % vm_name)
+	option: i/n
 
+	mmsh infohost [option] [vm_name]
+	"""
+	return command("infohost -%s %s" % (option, vm_name))
+
+def statehost_cmd(host_name):
+	"""
+	mmsh statehost [host_name]
+	"""
+	return command("statehost %s" % host_name)
+
+def starthost_cmd(host_name):
+	"""
+	mmsh starthost [host_name]
+	"""
+	return command("starthost %s" % host_name)
+
+def stophost_cmd(host_name):
+	"""
+	mmsh stophost [host_name]
+	"""
+	return command("stophost %s" % host_name)
+
+def startwd_cmd(host_name):
+	"""
+	mmsh startwd [host_name]
+	"""
+	return command("startwd %s" % host_name)
+
+def stopwd_cmd(host_name):
+	"""
+	mmsh stopwd [host_name]
+	"""
+	return command("stopwd %s" % host_name)
+
+def statewd_cmd(host_name):
+	"""
+	mmsh statewd [host_name]
+	"""
+	return command("statewd %s" % host_name)
+
+def stateshmgr_cmd(shmgr_name):
+	"""
+	mmsh stateshmgr [shmgr_name]
+	"""
+	return command("shmgr_name %s" % shmgr_name)
+
+def stateipmc_cmd(host_name):
+	"""
+	mmsh stateipmc [host_name]
+	"""
+	return command("stateipmc %s" % host_name)

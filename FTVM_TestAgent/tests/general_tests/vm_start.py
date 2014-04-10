@@ -13,5 +13,3 @@ def run_vm_start(parser):
 	process.vm_start(parser)
 	#assert
 	Assert.vm_running_in_hostOS(parser)
-	#postprocess
-	postprocess.postprocess(parser)

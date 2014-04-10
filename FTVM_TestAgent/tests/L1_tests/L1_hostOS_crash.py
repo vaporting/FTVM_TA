@@ -1,4 +1,7 @@
-
+from testagent import preprocess
+from testagent import process
+from testagent import Assert
+from testagent import postprocess
 
 def run_L1_hostOS_crash(parser):
 	#preprocess
@@ -9,5 +12,3 @@ def run_L1_hostOS_crash(parser):
 	Assert.detect_hostOS_crash(parser)
 	Assert.do_recovery(parser)
 	Assert.is_running_on_backup(parser)
-	#postprocess
-	postprocess.postprocess(parser)

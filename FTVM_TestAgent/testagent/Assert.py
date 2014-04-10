@@ -1,5 +1,6 @@
 #/usr/bin/python
 import time
+import subporcess
 import shell_server
 import FTVM
 import FTsystem
@@ -142,8 +143,22 @@ def recovery_vm_reboot(parser):
 		return True
 	raise TA_error.Assert_Error("VM (name : %s) has no recovery : vm reboot" % parser["vm_name"])
 
+def libvirt_running_in_hostOS(parser):
+	"""
+	libvirt process is running in hostOS or not
 
+	return True/raise exception
 
+	"""
+	pass
+
+def master_monitor_running():
+	"""
+	master monitor running or not
+
+	return True/raise exception
+	"""
+	pass
 
 if __name__ == '__main__':
 	print mmsh.inforecover("VM1")

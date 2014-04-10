@@ -9,6 +9,7 @@ import data_dir
 import cartesian_config
 import TA_error
 import macro
+import postprocess
 
 IGNORE_CHAR = ['#', ' ', '\n']
 n_tests_total = 0
@@ -201,24 +202,27 @@ class Test(object):
     except TA_error.Assert_Error, e:
       #test case failed
       n_tests_fail += 1
-      print_fail(self.test_name,t_elapsed)
+      print_fail(self.test_name, t_elapsed)
       print e.content
     except TA_error.Preprocess_Error, e:
       #preprocess has some problems
       n_tests_fail += 1
-      print_error(self.test_name,t_elapsed)
+      print_error(self.test_name, t_elapsed, "PREPROCESS")
       print e.content
     except TA_error.Process_Error, e:
       #process has some problems
       n_tests_fail += 1
-      print_error(self.test_name,t_elapsed)
+      print_error(self.test_name,t_elapsed, "PROCESS")
       print e.content
-    except TA_error.Postprocess_Error, e:
-      #postprocess has some problems
-      print "postprocess error"
-      print e.content
-    if test_pass == True:
-      print_pass(self.test_name,t_elapsed)
+    finally:
+      try:
+        if test_pass == True:
+          print_pass(self.test_name,t_elapsed)
+        postprocess.postprocess(self.parser)
+      except TA_error.Postprocess_Error, e:
+        #print "postprocess error"
+        print_error(self.test_name,t_elapsed, "POSTPROCESS")
+        print e.content
 
   def main(self):
     self._parse_test_cfg()  #parse test cfg file
@@ -330,8 +334,8 @@ def print_fail(test_name, time):
   print("test name: "+test_name+" "+bcolors.FAIL + "FAIL" +
                  bcolors.ENDC + " (%.2f s)" % time)
 
-def print_error(test_name, time):
-  print("test name: "+test_name+" "+bcolors.ERROR + "ERROR" +
+def print_error(test_name, time, err_type):
+  print("test name: "+test_name+" "+bcolors.ERROR +err_type+" ERROR" +
                  bcolors.ENDC + " (%.2f s)" % time)
 
 
@@ -393,6 +397,7 @@ def old_run_tests (options):
       print e.content
     except TA_error.Postprocess_Error, e:
       #postprocess has some problems
+      print_error(t.test_name,t_elapsed)
       print e.content
 
 

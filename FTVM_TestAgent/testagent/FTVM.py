@@ -11,8 +11,9 @@ def get_vm_status(vm_name, ip=""):
 	return status (running/paused/shut off)
 	"""
 	cmd = cmd_virsh.domstate_cmd(vm_name, ip)
-	status, error = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE).communicate()
+	status, error = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 	#print status.rstrip()
+	#print "error :",error
 	return status.rstrip()
 
 def is_running(vm_name, ip=""):

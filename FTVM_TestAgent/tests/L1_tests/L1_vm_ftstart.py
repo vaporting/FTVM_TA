@@ -10,8 +10,6 @@ def run_L1_vm_ftstart(parser):
 	#preprocess
 	preprocess.preprocess(parser)
 	#process
-	process.vm_start(parser)
+	process.vm_ftstart(parser)
 	#assert
 	Assert.vm_running_in_hostOS(parser)
-	#postprocess
-	postprocess.postprocess(parser)

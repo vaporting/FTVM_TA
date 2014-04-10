@@ -17,9 +17,11 @@ L1_TESTS_CFG_DIR = os.path.join(L1_TESTS_DIR, "cfg/")
 L2_TESTS_DIR = os.path.join(TESTS_DIR, "L2_tests/")
 L2_TESTS_CFG_DIR = os.path.join(L2_TESTS_DIR, "cfg/")
 COMBINATION_TESTS_DIR = os.path.join(TESTS_DIR, "combination_tests/")
+LIBVIRT_PID_DIR = "/var/run/"
 VM_PID_DIR = "/var/run/libvirt/qemu/"
-HOSTOS_TEST_DIR = "/var/FTVM_testing/"
-HOSTOS_PROCESS_DIR = os.path.join(HOSTOS_TEST_DIR, "process/")
+MM_PID_DIR = "/var/run/master_monitor/"
+OS_TEST_DIR = "/var/FTVM_testing/"
+OS_PROCESS_DIR = os.path.join(OS_TEST_DIR, "process/")
 
 
 
